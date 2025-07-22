@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Crypto Server - Saballa & Damaolao</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        .upload-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 5px;
+        }
+        .file-list {
+            background: white;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            margin-top: 1rem;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 0.6rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .btn {
+            padding: 0.4rem 0.8rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-delete {
+            background: #dc3545;
+            margin-left: 0.5rem;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Project File Crypto Server</h1>
+
+    <div class="upload-section">
+        <h2>🔐 Encrypt & Upload a File</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button class="btn" type="submit">Encrypt & Upload</button>
+        </form>
+    </div>
+
+    <div class="file-list">
+        <h2>📂 Encrypted Files</h2>
+        {% if files %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Filename</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files %}
+                <tr>
+                    <td>{{ file }}</td>
+                    <td class="action-buttons">
+                        <a class="btn" href="/download/{{ file }}">Download (Decrypted)</a>
+                        <form action="/delete/{{ file }}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete {{ file }}?')">
+                            <button type="submit" class="btn btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No files uploaded yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
